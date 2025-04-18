@@ -41,9 +41,8 @@ docker build -t linuxbuilder .
 configure:
 ```sh
 docker run --rm -it -v $PWD:/mnt linuxbuilder sh -c 'cd /mnt; make ARCH=arm CROSS_COMPILE=/usr/bin/arm-linux-gnueabi- imx60_wario_defconfig'
-docker run --rm -it -v $PWD:/mnt linuxbuilder sh -c 'cd /mnt; make ARCH=arm CROSS_COMPILE=/usr/bin/arm-linux-gnueabi- nconfig'
 ```
-Device Drivers -> Network Device Support -> Universal TUN/TAP device driver support - set the value of the tristate to M, exit and save
+if you want to change the defaults, use nconfig instead of menuconfig - menuconfig needs libncurses5 which is hard to get on modern linux distributions
 
 build:
 ```sh
