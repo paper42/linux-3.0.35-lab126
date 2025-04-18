@@ -22,3 +22,30 @@ Run the following command to load the config file:
 ```
 make ARCH=arm CROSS_COMPILE=<path to gcc linaro>/bin/arm-linux-gnueabi- <configure>
 ```
+
+## Step by step building process
+clone the repository
+```sh
+git clone https://github.com/katadelos/linux-3.0.35-lab126
+cd linux-3.0.35-lab126
+```
+prepare building environment
+`Dockerfile`:
+```dockerfile
+FROM ubuntu:24.04
+RUN apt update && apt install -y gcc make gcc-arm-linux-gnueabi binutils-arm-linux-gnueabi libncurses-dev
+```
+```sh
+docker build -t linuxbuilder .
+```
+configure:
+```sh
+docker run --rm -it -v $PWD:/mnt linuxbuilder sh -c 'cd /mnt; make ARCH=arm CROSS_COMPILE=/usr/bin/arm-linux-gnueabi- imx60_wario_defconfig'
+docker run --rm -it -v $PWD:/mnt linuxbuilder sh -c 'cd /mnt; make ARCH=arm CROSS_COMPILE=/usr/bin/arm-linux-gnueabi- nconfig'
+```
+Device Drivers -> Network Device Support -> Universal TUN/TAP device driver support - set the value of the tristate to M, exit and save
+
+build:
+```sh
+docker run --rm -it -v $PWD:/mnt linuxbuilder sh -c 'cd /mnt; make ARCH=arm CROSS_COMPILE=/usr/bin/arm-linux-gnueabi- nconfig'
+```
